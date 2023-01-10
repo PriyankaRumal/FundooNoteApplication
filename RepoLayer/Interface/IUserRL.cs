@@ -9,5 +9,6 @@ namespace RepoLayer.Interface
     public interface IUserRL
     {
         public UserEntity RegistorUser(UserRegistration userRegistration);
+        public string LoginUser(UserLogin userLogin);
     }
 }
