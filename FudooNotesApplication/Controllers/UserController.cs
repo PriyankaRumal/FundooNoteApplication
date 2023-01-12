@@ -1,6 +1,7 @@
 ﻿using BussinessLayer.Interface;
 using BussinessLayer.Service;
 using CommonLayer.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -51,6 +52,28 @@ namespace FudooNotesApplication.Controllers
                 else
                 {
                     return this.NotFound(new { success = false, message = "Login Unsuccessfull!" });
+                }
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpPost]
+        [Route("ForgetPassword")]
+        public IActionResult ForgetPassword(string email)
+        {
+            try
+            {
+                var result = userBl.ForgetPassword(email);
+                if (result != null)
+                {
+                    return this.Ok(new { success = true, message = "Mail Sent Successfully!", data = result });
+                }
+                else
+                {
+                    return this.NotFound(new { success = false, message = "Mail Sent Unsuccessfully!" });
                 }
             }
             catch (System.Exception)

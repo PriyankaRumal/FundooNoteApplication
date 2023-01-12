@@ -22,5 +22,6 @@ namespace FudooNotesApplication
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
     }
 }
