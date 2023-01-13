@@ -116,5 +116,28 @@ namespace RepoLayer.Service
                 throw;
             }
         }
+       public bool ResetPassword(string email,string new_Password,string confirm_Password)
+        {
+            try
+            {
+                if(new_Password==confirm_Password)
+                {
+                    var result = fundo.UserTable.Where(x => x.Email == email).FirstOrDefault();
+                    result.Password = new_Password;
+                    fundo.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

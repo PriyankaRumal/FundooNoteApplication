@@ -4,6 +4,8 @@ using CommonLayer.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Security.Claims;
 
 namespace FudooNotesApplication.Controllers
 {
@@ -73,7 +75,7 @@ namespace FudooNotesApplication.Controllers
                 }
                 else
                 {
-                    return this.NotFound(new { success = false, message = "Mail Sent Unsuccessfully!" });
+                    return this.NotFound(new { success = false, message = "Mail Sent Unsuccessfull!" });
                 }
             }
             catch (System.Exception)
@@ -82,5 +84,30 @@ namespace FudooNotesApplication.Controllers
                 throw;
             }
         }
+        [Authorize]
+        [HttpPut]
+        [Route("ResetPassword")]
+        public IActionResult PasswordReset(string new_Password,string confirm_Password)
+        {
+            try
+            {
+                var email = User.FindFirst(ClaimTypes.Email).Value.ToString();
+                var result = userBl.ResetPassword(email,new_Password,confirm_Password);
+                if (result == true)
+                {
+                    return this.Ok(new { success = true, message = "Password reset Successfull!", data = result });
+                }
+                else
+                {
+                    return this.NotFound(new { success = false, message = "Password reset Failed!" });
+                }
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+        }
+
     }
 }
