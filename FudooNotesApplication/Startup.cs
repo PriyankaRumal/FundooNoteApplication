@@ -41,6 +41,8 @@ namespace FudooNotesApplication
             services.AddControllers();
             services.AddTransient<IUserBL,UserBL>();
             services.AddTransient<IUserRL, UserRL>();
+            services.AddTransient<INoteBL, NoteBL>();
+            services.AddTransient<INoteRL,NoteRL>();
             services.AddSwaggerGen();
             services.AddSwaggerGen(c =>
             {
