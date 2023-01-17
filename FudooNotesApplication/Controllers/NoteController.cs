@@ -13,10 +13,10 @@ namespace FudooNotesApplication.Controllers
     [ApiController]
     public class NoteController : ControllerBase
     {
-        INoteBL userbl;
-        public NoteController(INoteBL userbl)
+        INoteBL notebl;
+        public NoteController(INoteBL notebl)
         {
-            this.userbl = userbl;
+            this.notebl = notebl;
         }
        [Authorize]
         [HttpPost]
@@ -26,7 +26,7 @@ namespace FudooNotesApplication.Controllers
             try
             {
                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
-                var result = userbl.CreateNote(noteModel, userId);
+                var result = notebl.CreateNote(noteModel, userId);
                 if (result != null)
                 {
                     return this.Ok(new { success = true, message = "Note Created SuccessFully", data = result });
@@ -37,6 +37,52 @@ namespace FudooNotesApplication.Controllers
                 }
             }
             catch (System.Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpGet]
+        [Route("Retrive")]
+        public IActionResult RetriveNotes(long noteId)
+        {
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                var result = notebl.Retrive(userId, noteId);
+                if (result != null)
+                {
+                    return Ok(new { success = true, message = "Get Notes Successfully", data = result });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Unable to get Note." });
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpGet]
+        [Route("GetAll")]
+        public IActionResult RetriveAll()
+        {
+            try
+            {
+               long userId= Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                var result = notebl.RetriveAll(userId);
+                if(result!=null)
+                {
+                    return this.Ok(new { success = true, message = "Retrived all notes", data = result });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = true, message = "Data Not Found" });
+                }
+            }
+            catch (Exception)
             {
 
                 throw;

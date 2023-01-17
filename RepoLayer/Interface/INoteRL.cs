@@ -9,5 +9,7 @@ namespace RepoLayer.Interface
     public interface INoteRL
     {
         public NoteEntity CreateNote(NoteModel noteModel, long userId);
+        public IEnumerable<NoteEntity> Retrive(long userId, long noteId);
+        public IEnumerable<NoteEntity> RetriveAll(long userId);
     }
 }

@@ -30,5 +30,31 @@ namespace BussinessLayer.Service
                 throw;
             }
         }
+
+        public IEnumerable<NoteEntity> Retrive(long userId, long noteId)
+        {
+            try
+            {
+                return noterl.Retrive(userId, noteId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public IEnumerable<NoteEntity> RetriveAll(long userId)
+        {
+            try
+            {
+                return noterl.RetriveAll(userId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

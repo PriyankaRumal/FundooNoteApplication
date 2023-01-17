@@ -13,7 +13,7 @@ namespace RepoLayer.Service
     public class NoteRL :INoteRL
     {
         FundoContext fundo;
-        IConfiguration configuration;
+        //IConfiguration configuration;
         public NoteRL(FundoContext fundo)
         {
             this.fundo = fundo;
@@ -54,7 +54,33 @@ namespace RepoLayer.Service
                 throw;
             }
         }
+        public IEnumerable<NoteEntity> Retrive(long userId,long noteId)
+        {
+            try
+            {
+                var result = fundo.NoteTable.Where(e => e.NoteId==noteId && e.UserId == userId);
+                return result;
+            }
+            catch (Exception)
+            {
 
+                return null;
+            }
+        }
+        public IEnumerable<NoteEntity> RetriveAll(long userId)
+        {
+            try
+            {
+                var result = fundo.NoteTable.Where(x => x.UserId == userId);
+                return result;
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
+        }
+
+       
     }
 }
