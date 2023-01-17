@@ -10,7 +10,7 @@ using System.Text;
 
 namespace RepoLayer.Service
 {
-    public class NoteRL :INoteRL
+    public class NoteRL : INoteRL
     {
         FundoContext fundo;
         //IConfiguration configuration;
@@ -31,14 +31,14 @@ namespace RepoLayer.Service
                 noteEntity.ArchiveNote = noteModel.ArchiveNote;
                 noteEntity.PinNote = noteModel.PinNote;
                 noteEntity.DeleteNote = noteModel.DeleteNote;
-               noteEntity.CretedTime = noteModel.CretedTime;
+                noteEntity.CretedTime = noteModel.CretedTime;
                 noteEntity.EditedTime = noteModel.EditedTime;
                 noteEntity.UserId = userId;
                 fundo.NoteTable.Add(noteEntity);
-                int result= fundo.SaveChanges();
-                
+                int result = fundo.SaveChanges();
 
-                if (result>0)
+
+                if (result > 0)
                 {
                     return noteEntity;
                 }
@@ -54,11 +54,11 @@ namespace RepoLayer.Service
                 throw;
             }
         }
-        public IEnumerable<NoteEntity> Retrive(long userId,long noteId)
+        public IEnumerable<NoteEntity> Retrive(long userId, long noteId)
         {
             try
             {
-                var result = fundo.NoteTable.Where(e => e.NoteId==noteId && e.UserId == userId);
+                var result = fundo.NoteTable.Where(e => e.NoteId == noteId && e.UserId == userId);
                 return result;
             }
             catch (Exception)
@@ -81,20 +81,20 @@ namespace RepoLayer.Service
             }
         }
 
-        public bool UpdateNote(NoteModel noteModel, long userId,long noteId)
+        public bool UpdateNote(NoteModel noteModel, long userId, long noteId)
         {
             try
             {
-                var result = fundo.NoteTable.FirstOrDefault(x => x.UserId == userId && x.NoteId==noteId);
-                if(result!=null)
+                var result = fundo.NoteTable.FirstOrDefault(x => x.UserId == userId && x.NoteId == noteId);
+                if (result != null)
                 {
-                    if(noteModel.Title!= null)
+                    if (noteModel.Title != null)
                     {
                         result.Title = noteModel.Title;
                     }
-                    if(noteModel.Description!=null)
+                    if (noteModel.Description != null)
                     {
-                        result.Description=noteModel.Description;
+                        result.Description = noteModel.Description;
                     }
                     result.EditedTime = DateTime.Now;
                     fundo.SaveChanges();
@@ -104,7 +104,7 @@ namespace RepoLayer.Service
                 {
                     return false;
                 }
-                
+
             }
             catch (Exception)
             {
@@ -112,19 +112,19 @@ namespace RepoLayer.Service
                 throw;
             }
         }
-        public bool DeleteNote(long userId,long noteId)
+        public bool DeleteNote(long userId, long noteId)
         {
             try
             {
                 var result = fundo.NoteTable.FirstOrDefault(x => x.UserId == userId && x.NoteId == noteId);
                 fundo.NoteTable.Remove(result);
-               if(result!=null)
+                if (result != null)
                 {
                     fundo.NoteTable.Remove(result);
                     fundo.SaveChanges();
                     return true;
                 }
-               else
+                else
                 {
                     return false;
                 }
@@ -135,12 +135,12 @@ namespace RepoLayer.Service
                 throw;
             }
         }
-        public bool PinNote(long userId,long noteId)
+        public bool PinNote(long userId, long noteId)
         {
             try
             {
                 var result = fundo.NoteTable.FirstOrDefault(x => x.UserId == userId && x.NoteId == noteId);
-                if(result.PinNote==true)
+                if (result.PinNote == true)
                 {
                     result.PinNote = false;
                     fundo.SaveChanges();
@@ -148,7 +148,7 @@ namespace RepoLayer.Service
                 }
                 else
                 {
-                   result.PinNote=true;
+                    result.PinNote = true;
                     fundo.SaveChanges();
                     return true;
                 }
@@ -160,14 +160,14 @@ namespace RepoLayer.Service
                 throw;
             }
         }
-        public bool ArchieveNote(long userId,long noteId)
+        public bool ArchieveNote(long userId, long noteId)
         {
             try
             {
                 var result = fundo.NoteTable.Where(x => x.UserId == userId && x.NoteId == noteId).FirstOrDefault();
-                if(result.ArchiveNote==true)
+                if (result.ArchiveNote == true)
                 {
-                    result.ArchiveNote=false;
+                    result.ArchiveNote = false;
                     fundo.SaveChanges();
                     return false;
                 }
@@ -175,6 +175,33 @@ namespace RepoLayer.Service
                 {
                     result.ArchiveNote = true;
                     fundo.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public bool Trash(long userId, long noteId)
+        {
+            try
+            {
+                var result = fundo.NoteTable.FirstOrDefault(e => e.UserId == userId && e.NoteId == noteId);
+
+                if (result.Trash == true)
+                {
+                    result.Trash = false;
+                    fundo.SaveChanges();
+
+                    return false;
+                }
+                else
+                {
+                    result.Trash = true;
+                    fundo.SaveChanges();
+
                     return true;
                 }
             }

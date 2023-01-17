@@ -182,5 +182,28 @@ namespace FudooNotesApplication.Controllers
                 throw;
             }
         }
+        [HttpPut]
+        [Route("TrashApi")]
+        public IActionResult Trash(long noteId)
+        {
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                var result = notebl.Trash(userId, noteId);
+                if (result == true)
+                {
+                    return this.Ok(new { succes = true, message = "Moved To Trash !", data = result });
+                }
+                else
+                {
+                    return this.Ok(new { succes = true, message = "Get a data" });
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
