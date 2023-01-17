@@ -14,6 +14,7 @@ namespace CommonLayer.Model
         public bool ArchiveNote { get; set; }
         public bool PinNote { get; set; }
         public bool DeleteNote { get; set; }
+        public bool Trash { get; set; }
        public DateTime CretedTime { get; set; }
        public DateTime EditedTime { get; set; }
     }

@@ -20,7 +20,7 @@ namespace FudooNotesApplication.Controllers
         }
        [Authorize]
         [HttpPost]
-        [Route("NoteModel")]
+        [Route("CreateNote")]
         public IActionResult CreateNote(NoteModel noteModel)
         {
             try
@@ -66,7 +66,7 @@ namespace FudooNotesApplication.Controllers
             }
         }
         [HttpGet]
-        [Route("GetAll")]
+        [Route("RetriveAll")]
         public IActionResult RetriveAll()
         {
             try
@@ -154,6 +154,29 @@ namespace FudooNotesApplication.Controllers
 
             }
             catch (System.Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpPut]
+        [Route("ArchieveNote")]
+        public IActionResult ArchieveNote(long noteId)
+        {
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                var result=notebl.ArchieveNote(userId, noteId);
+                if(result==true)
+                {
+                    return this.Ok(new { succes = true, message = "Archived !", data = result });
+                }
+                else
+                {
+                    return this.Ok(new { succes = true, message = "UnArchived" });
+                }
+            }
+            catch (Exception)
             {
 
                 throw;

@@ -160,5 +160,29 @@ namespace RepoLayer.Service
                 throw;
             }
         }
+        public bool ArchieveNote(long userId,long noteId)
+        {
+            try
+            {
+                var result = fundo.NoteTable.Where(x => x.UserId == userId && x.NoteId == noteId).FirstOrDefault();
+                if(result.ArchiveNote==true)
+                {
+                    result.ArchiveNote=false;
+                    fundo.SaveChanges();
+                    return false;
+                }
+                else
+                {
+                    result.ArchiveNote = true;
+                    fundo.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
