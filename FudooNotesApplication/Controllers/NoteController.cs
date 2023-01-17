@@ -111,5 +111,28 @@ namespace FudooNotesApplication.Controllers
                 throw;
             }
         }
+        [HttpDelete]
+        [Route("DeleteApi")]
+        public IActionResult DeleteApi(long noteId)
+        {
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                var result = notebl.DeleteNote(userId, noteId);
+                if(result==true)
+                {
+                    return this.Ok(new { succes = true, message = "Deleted successfully", data = result });
+                }
+                else
+                {
+                    return this.BadRequest(new { succes = false, message = "Not Deleted"});
+                }
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

@@ -12,5 +12,6 @@ namespace BussinessLayer.Interface
         public IEnumerable<NoteEntity> Retrive(long userId, long noteId);
         public IEnumerable<NoteEntity> RetriveAll(long userId);
         public bool UpdateNote(NoteModel noteModel, long userId, long noteId);
+        public bool DeleteNote(long userId, long noteId);
     }
 }

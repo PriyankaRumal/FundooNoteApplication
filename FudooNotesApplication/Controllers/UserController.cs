@@ -87,12 +87,12 @@ namespace FudooNotesApplication.Controllers
         [Authorize]
         [HttpPut]
         [Route("ResetPassword")]
-        public IActionResult PasswordReset(string new_Password,string confirm_Password)
+        public IActionResult PasswordReset(string new_Password, string confirm_Password)
         {
             try
             {
                 var email = User.FindFirst(ClaimTypes.Email).Value.ToString();
-                var result = userBl.ResetPassword(email,new_Password,confirm_Password);
+                var result = userBl.ResetPassword(email, new_Password, confirm_Password);
                 if (result == true)
                 {
                     return this.Ok(new { success = true, message = "Password reset Successfull!", data = result });
@@ -108,6 +108,6 @@ namespace FudooNotesApplication.Controllers
                 throw;
             }
         }
-
+        
     }
 }

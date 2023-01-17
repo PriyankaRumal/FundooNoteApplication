@@ -31,6 +31,7 @@ namespace BussinessLayer.Service
             }
         }
 
+
         public IEnumerable<NoteEntity> Retrive(long userId, long noteId)
         {
             try
@@ -62,6 +63,18 @@ namespace BussinessLayer.Service
             try
             {
                 return noterl.UpdateNote(noteModel, userId, noteId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public bool DeleteNote(long userId, long noteId)
+        {
+            try
+            {
+                return noterl.DeleteNote(userId, noteId);
             }
             catch (Exception)
             {
