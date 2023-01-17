@@ -79,7 +79,30 @@ namespace FudooNotesApplication.Controllers
                 }
                 else
                 {
-                    return this.BadRequest(new { success = true, message = "Data Not Found" });
+                    return this.BadRequest(new { success = false, message = "Data Not Found" });
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpPut]
+        [Route("UpdateApi")]
+        public IActionResult UpdateNote(NoteModel notemodel,long noteId)
+        {
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                var result = notebl.UpdateNote(notemodel, userId, noteId);
+                if(result == true)
+                {
+                    return this.Ok(new {succes=true, message="Updated successfully",data=result});
+                }
+                else
+                {
+                    return this.BadRequest(new { succes = false, message = "Updation failed" });
                 }
             }
             catch (Exception)

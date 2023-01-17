@@ -81,6 +81,37 @@ namespace RepoLayer.Service
             }
         }
 
-       
+        public bool UpdateNote(NoteModel noteModel, long userId,long noteId)
+        {
+            try
+            {
+                var result = fundo.NoteTable.FirstOrDefault(x => x.UserId == userId && x.NoteId==noteId);
+                if(result!=null)
+                {
+                    if(noteModel.Title!= null)
+                    {
+                        result.Title = noteModel.Title;
+                    }
+                    if(noteModel.Description!=null)
+                    {
+                        result.Description=noteModel.Description;
+                    }
+                    result.EditedTime = DateTime.Now;
+                    fundo.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+                
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        
     }
 }

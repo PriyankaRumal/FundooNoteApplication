@@ -56,5 +56,18 @@ namespace BussinessLayer.Service
                 throw;
             }
         }
+
+        public bool UpdateNote(NoteModel noteModel, long userId, long noteId)
+        {
+            try
+            {
+                return noterl.UpdateNote(noteModel, userId, noteId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
