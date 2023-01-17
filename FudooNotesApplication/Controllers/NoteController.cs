@@ -119,14 +119,39 @@ namespace FudooNotesApplication.Controllers
             {
                 long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
                 var result = notebl.DeleteNote(userId, noteId);
-                if(result==true)
+                if (result == true)
                 {
                     return this.Ok(new { succes = true, message = "Deleted successfully", data = result });
                 }
                 else
                 {
-                    return this.BadRequest(new { succes = false, message = "Not Deleted"});
+                    return this.BadRequest(new { succes = false, message = "Not Deleted" });
                 }
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+
+        }
+        [HttpPut]
+        [Route("Pin")]
+        public IActionResult Pinned(long noteId)
+        {
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                var result=notebl.PinNote(userId, noteId);
+                if(result==true)
+                {
+                    return this.Ok(new { succes = true, message = "Pinned a Message", data = result });
+                }
+                else
+                {
+                    return this.BadRequest(new { succes = false, message = "UnPinned Message!" });
+                }
+
             }
             catch (System.Exception)
             {
