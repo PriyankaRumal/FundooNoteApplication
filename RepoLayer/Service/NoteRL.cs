@@ -211,5 +211,30 @@ namespace RepoLayer.Service
                 throw;
             }
         }
+        public NoteEntity color(ColorModel model ,long userId)
+        {
+            try
+            {
+                var result = fundo.NoteTable.Where(x => x.UserId == userId && x.NoteId == model.NoteId).FirstOrDefault();
+                if(result!=null)
+                {
+                    result.color =model.color;
+                    fundo.SaveChanges();
+                    return result;
+
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+       
     }
 }

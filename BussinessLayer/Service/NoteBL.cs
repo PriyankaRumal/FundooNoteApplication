@@ -121,5 +121,18 @@ namespace BussinessLayer.Service
                 throw;
             }
         }
+
+        public NoteEntity color(ColorModel model, long userId)
+        {
+            try
+            {
+                return noterl.color(model,userId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

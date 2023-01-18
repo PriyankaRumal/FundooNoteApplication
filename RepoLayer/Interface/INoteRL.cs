@@ -16,5 +16,6 @@ namespace RepoLayer.Interface
         public bool PinNote(long userId, long noteId);
         public bool ArchieveNote(long userId, long noteId);
         public bool Trash(long userId, long noteId);
+        public NoteEntity color(ColorModel model, long userId);
     }
 }

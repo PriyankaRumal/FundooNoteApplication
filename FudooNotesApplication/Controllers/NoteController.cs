@@ -6,6 +6,7 @@ using System.Linq;
 using System;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading.Channels;
 
 namespace FudooNotesApplication.Controllers
 {
@@ -205,5 +206,28 @@ namespace FudooNotesApplication.Controllers
                 throw;
             }
         }
-    }
+        [HttpPut]
+        [Route("ColorNote")]
+        public IActionResult Color(ColorModel model)
+        {
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                var result = notebl.color(model,userId);
+                if(result!=null)
+                {
+                    return this.Ok(new { succes = true, message = "Color change successfully !", data = result });
+                }
+                else
+                {
+                    return this.BadRequest(new { succes = true, message = "Color not changes!", data = result });
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+    } 
 }
