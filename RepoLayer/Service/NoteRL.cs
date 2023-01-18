@@ -1,4 +1,6 @@
-﻿using CommonLayer.Model;
+﻿using CloudinaryDotNet;
+using CommonLayer.Model;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using RepoLayer.Context;
 using RepoLayer.Entities;
@@ -13,10 +15,11 @@ namespace RepoLayer.Service
     public class NoteRL : INoteRL
     {
         FundoContext fundo;
-        //IConfiguration configuration;
-        public NoteRL(FundoContext fundo)
+        IConfiguration configuration;
+        public NoteRL(FundoContext fundo, IConfiguration configuration)
         {
             this.fundo = fundo;
+            this.configuration = configuration;
         }
         public NoteEntity CreateNote(NoteModel noteModel, long userId)
         {
@@ -234,7 +237,41 @@ namespace RepoLayer.Service
                 throw;
             }
         }
+        public string UploadImage(IFormFile image, long noteId, long userId)
+        {
+            try
+            {
+                var result = fundo.NoteTable.FirstOrDefault(e => e.NoteId == noteId && e.UserId == userId);
+                if (result != null)
+                {
+                    Account accounnt = new Account(
+                        this.configuration["CloudinarySettings:CloudName"],
+                       this.configuration["CloudinarySettings:ApiKey"],
+                        this.configuration["CloudinarySettings:ApiSecret"]
+                        );
+                    Cloudinary cloudinary = new Cloudinary(accounnt);
+                    var uploadParams = new CloudinaryDotNet.Actions.ImageUploadParams()
+                    {
+                        File = new FileDescription(image.FileName, image.OpenReadStream()),
+                    };
+                    var uploadResult = cloudinary.Upload(uploadParams);
+                    string imagePath = uploadResult.Url.ToString();
+                    result.ImagePath = imagePath;
+                    fundo.SaveChanges();
 
-       
+                    return "Image uploaded successfully";
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
     }
 }

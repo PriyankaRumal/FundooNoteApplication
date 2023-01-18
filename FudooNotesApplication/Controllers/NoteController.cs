@@ -229,5 +229,30 @@ namespace FudooNotesApplication.Controllers
                 throw;
             }
         }
+        [HttpPost]
+        [Route("UploadImage")]
+        public IActionResult UploadImage(IFormFile image, long noteId)
+        {
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                var result = notebl.UploadImage(image,noteId, userId);
+                if (result != null)
+                {
+                    return this.Ok(new { succes = true, message = "Uploaded image successfully !", data = result });
+                }
+                else
+                {
+                    return this.BadRequest(new { succes = true, message = "Upload Image Unsuccessfully !", data = result });
+                }
+
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     } 
 }

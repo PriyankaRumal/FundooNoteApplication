@@ -1,5 +1,6 @@
 ﻿using BussinessLayer.Interface;
 using CommonLayer.Model;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Win32.SafeHandles;
 using RepoLayer.Entities;
 using RepoLayer.Interface;
@@ -127,6 +128,19 @@ namespace BussinessLayer.Service
             try
             {
                 return noterl.color(model,userId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public string UploadImage(IFormFile image, long noteId, long userId)
+        {
+            try
+            {
+                return noterl.UploadImage(image, noteId, userId);
             }
             catch (Exception)
             {
