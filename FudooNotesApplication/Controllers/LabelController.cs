@@ -59,7 +59,7 @@ namespace FudooNotesApplication.Controllers
             }
         }
         [Authorize]
-        [HttpPost]
+        [HttpPut]
         [Route("UpdateLabel")]
         public IActionResult UpdateLabel(UpdateLabel update)
         {
@@ -74,6 +74,30 @@ namespace FudooNotesApplication.Controllers
                 else
                 {
                     return this.BadRequest(new { success = false, message = "Label not updated !" });
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        [Authorize]
+        [HttpDelete]
+        [Route("DeleteLabel")]
+        public IActionResult DeleteLabel(long labelId)
+        {
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                var result = labelbl.DeleteLabel(userId, labelId);
+                if (result == true)
+                {
+                    return this.Ok(new { success = true, message = "Label deleted SuccessFully", data = result });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "deletion unsuccesfull !" });
                 }
             }
             catch (Exception)

@@ -120,7 +120,7 @@ namespace RepoLayer.Service
             try
             {
                 var result = fundo.NoteTable.FirstOrDefault(x => x.UserId == userId && x.NoteId == noteId);
-                fundo.NoteTable.Remove(result);
+                //fundo.NoteTable.Remove(result);
                 if (result != null)
                 {
                     fundo.NoteTable.Remove(result);

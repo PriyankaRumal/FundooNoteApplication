@@ -86,5 +86,28 @@ namespace RepoLayer.Service
                 throw;
             }
         }
+        public bool DeleteLabel(long userId ,long LabelId)
+        {
+            try
+            {
+                var result = fundo.LableTable.FirstOrDefault(x => x.UserId == userId && x.LabelId == LabelId);
+               // fundo.LableTable.Remove(result);
+                if (result != null)
+                {
+                    fundo.LableTable.Remove(result);
+                    fundo.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
