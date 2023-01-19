@@ -43,6 +43,7 @@ namespace FudooNotesApplication.Controllers
                 throw;
             }
         }
+        [Authorize]
         [HttpGet]
         [Route("Retrive")]
         public IActionResult RetriveNotes(long noteId)
@@ -66,6 +67,7 @@ namespace FudooNotesApplication.Controllers
                 throw;
             }
         }
+        [Authorize]
         [HttpGet]
         [Route("RetriveAll")]
         public IActionResult RetriveAll()
@@ -89,6 +91,7 @@ namespace FudooNotesApplication.Controllers
                 throw;
             }
         }
+        [Authorize]
         [HttpPut]
         [Route("UpdateApi")]
         public IActionResult UpdateNote(NoteModel notemodel,long noteId)
@@ -112,6 +115,7 @@ namespace FudooNotesApplication.Controllers
                 throw;
             }
         }
+        [Authorize]
         [HttpDelete]
         [Route("DeleteApi")]
         public IActionResult DeleteApi(long noteId)
@@ -136,6 +140,7 @@ namespace FudooNotesApplication.Controllers
             }
 
         }
+        [Authorize]
         [HttpPut]
         [Route("Pin")]
         public IActionResult Pinned(long noteId)
@@ -160,6 +165,7 @@ namespace FudooNotesApplication.Controllers
                 throw;
             }
         }
+        [Authorize]
         [HttpPut]
         [Route("ArchieveNote")]
         public IActionResult ArchieveNote(long noteId)
@@ -183,6 +189,7 @@ namespace FudooNotesApplication.Controllers
                 throw;
             }
         }
+        [Authorize]
         [HttpPut]
         [Route("TrashApi")]
         public IActionResult Trash(long noteId)
@@ -206,6 +213,7 @@ namespace FudooNotesApplication.Controllers
                 throw;
             }
         }
+        [Authorize]
         [HttpPut]
         [Route("ColorNote")]
         public IActionResult Color(ColorModel model)
@@ -229,6 +237,7 @@ namespace FudooNotesApplication.Controllers
                 throw;
             }
         }
+        [Authorize]
         [HttpPost]
         [Route("UploadImage")]
         public IActionResult UploadImage(IFormFile image, long noteId)
