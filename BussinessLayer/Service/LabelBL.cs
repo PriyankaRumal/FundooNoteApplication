@@ -33,5 +33,18 @@ namespace BussinessLayer.Service
                 throw;
             }
         }
+
+        public bool UpdateLabel(long userId, UpdateLabel update)
+        {
+            try
+            {
+                return labelrl.UpdateLabel(userId, update);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

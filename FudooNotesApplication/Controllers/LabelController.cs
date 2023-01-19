@@ -58,5 +58,29 @@ namespace FudooNotesApplication.Controllers
                 throw;
             }
         }
+        [Authorize]
+        [HttpPost]
+        [Route("UpdateLabel")]
+        public IActionResult UpdateLabel(UpdateLabel update)
+        {
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+                var result = labelbl.UpdateLabel(userId,update);
+                if (result ==true)
+                {
+                    return this.Ok(new { success = true, message = "Label Updated SuccessFully", data = result });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Label not updated !" });
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

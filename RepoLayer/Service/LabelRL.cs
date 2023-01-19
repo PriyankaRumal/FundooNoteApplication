@@ -20,7 +20,7 @@ namespace RepoLayer.Service
         {
             try
             {
-                var result=fundo.UserTable.Where(e =>e.UserId==userId).FirstOrDefault();
+                var result=fundo.UserTable.Where(e =>e.UserId==userId ).FirstOrDefault();
                 if(result!=null)
                 {
                     LableEntity lableEntity = new LableEntity();
@@ -55,8 +55,30 @@ namespace RepoLayer.Service
         {
             try
             {
-                var result = fundo.LableTable.Where(e => e.UserId == userId);
+                var result = fundo.LableTable.Where(e => e.UserId == userId).ToList();
                  return result;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public bool UpdateLabel(long userId,UpdateLabel update)
+        {
+            try
+            {
+                var result = fundo.LableTable.Where(e => e.UserId == userId && e.LabelId ==update.labelId).FirstOrDefault();
+                if(result!=null)
+                {
+                    result.LabelName = update.NewLabelName;
+                    fundo.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             catch (Exception)
             {
