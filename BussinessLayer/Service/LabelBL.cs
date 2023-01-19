@@ -1,5 +1,6 @@
 ﻿using BussinessLayer.Interface;
 using CommonLayer.Model;
+using RepoLayer.Entities;
 using RepoLayer.Interface;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,19 @@ namespace BussinessLayer.Service
         public bool CreateLable(LabelModel labelModel, long userId)
         {
             return labelrl.CreateLable(labelModel, userId);
+        }
+
+        public IEnumerable<LableEntity> RetriveLabel(long userId, long LabelId)
+        {
+            try
+            {
+                return labelrl.RetriveLabel(userId,LabelId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }
