@@ -61,5 +61,27 @@ namespace FudooNotesApplication.Controllers
                 throw;
             }
         }
+        [HttpDelete]
+        [Route("RemoveCollab")]
+        public IActionResult RemoveCollab(long collabId)
+        {
+            try
+            {
+                var result = collabbl.RemoveCollab(collabId);
+                if(result==true)
+                {
+                    return this.Ok(new { succes = true, message = "Removed Successfull!", data = result });
+                }
+                else
+                {
+                    return this.BadRequest(new { succes = false, message = " Removed Failed!" });
+                }
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

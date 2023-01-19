@@ -58,5 +58,27 @@ namespace RepoLayer.Service
                 throw;
             }
         }
+        public bool RemoveCollab(long collabId)
+        {
+            try
+            {
+                var result = fundo.CollabTable.FirstOrDefault(e => e.CollabId == collabId);
+                if(result!=null)
+                {
+                    fundo.CollabTable.Remove(result);
+                    fundo.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
