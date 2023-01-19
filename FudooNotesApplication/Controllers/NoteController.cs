@@ -243,7 +243,7 @@ namespace FudooNotesApplication.Controllers
                 }
                 else
                 {
-                    return this.BadRequest(new { succes = true, message = "Upload Image Unsuccessfully !", data = result });
+                    return this.BadRequest(new { succes = true, message = "Upload Image Unsuccessfull!", data = result });
                 }
 
 
