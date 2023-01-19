@@ -37,5 +37,29 @@ namespace FudooNotesApplication.Controllers
                 throw;
             }
         }
+        [HttpGet]
+        [Route("RetriveCollab")]
+        public IActionResult RetriveCollab(long noteId)
+        {
+            try
+            {
+                var result = collabbl.RetriveCollab(noteId);
+                if (result != null)
+                {
+                    return this.Ok(new { succes = true, message = "Retrived Successfull!", data = result });
+                }
+                else
+                {
+                    return this.BadRequest(new { succes = false, message = " Retrive Failed!" });
+                }
+
+
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

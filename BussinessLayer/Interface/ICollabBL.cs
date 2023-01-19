@@ -9,5 +9,6 @@ namespace BussinessLayer.Interface
     public interface ICollabBL
     {
         public CollabEntity CreateCollab(CollabModel collabModel, long noteId);
+        public IEnumerable<CollabEntity> RetriveCollab(long noteId);
     }
 }

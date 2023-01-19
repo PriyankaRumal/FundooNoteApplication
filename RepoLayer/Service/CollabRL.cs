@@ -46,5 +46,17 @@ namespace RepoLayer.Service
                 throw;
             }
         }
+        public IEnumerable<CollabEntity> RetriveCollab(long noteId)
+        {
+            try
+            {
+                var result = fundo.CollabTable.Where(e => e.NoteId == noteId).ToList();
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
