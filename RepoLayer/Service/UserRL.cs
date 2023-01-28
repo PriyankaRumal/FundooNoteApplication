@@ -33,7 +33,7 @@ namespace RepoLayer.Service
                 userEntity.FirstName=userRegistration.FirstName;
                 userEntity.LastName=userRegistration.LastName;
                 userEntity.Email=userRegistration.Email;
-                userEntity.Password=userRegistration.Password;
+               userEntity.Password= EncryptPassword(userRegistration.Password);
                 fundo.UserTable.Add(userEntity);
                 int result = fundo.SaveChanges();
                 if(result >0)
@@ -52,15 +52,65 @@ namespace RepoLayer.Service
                 throw;
             }
         }
+        public string EncryptPassword(string Password)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(Password))
+                {
+                    return null;
+                }
+                else
+                {
+                    byte[] strongpassword = ASCIIEncoding.UTF8.GetBytes(Password);
+                    string EncryptPassword = Convert.ToBase64String(strongpassword);
+                    return EncryptPassword;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public string DecryptPassword(string Password)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(Password))
+                {
+                    return null;
+                }
+                else
+                {
+                    byte[] encryptpassword = Convert.FromBase64String(Password);
+                    string decryptpassword = ASCIIEncoding.ASCII.GetString(encryptpassword);
+                    return decryptpassword;
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
         public string LoginUser(UserLogin userLogin)
         {
             try
             {
-                var result = fundo.UserTable.Where(x => x.Email == userLogin.Email && x.Password == userLogin.Password).FirstOrDefault();
-                if(result!=null)
+                var result = fundo.UserTable.Where(x => x.Email == userLogin.Email).FirstOrDefault();
+                if (result != null)
                 {
-                    var token = GenerateSecurityToken(result.Email, result.UserId);
-                    return token;
+                    string decrypass = DecryptPassword(result.Password);
+                    if (decrypass == userLogin.Password)
+                    {
+                        var token = GenerateSecurityToken(result.Email, result.UserId);
+                        return token;
+                    }
+                    return "login failed";
                 }
                 else
                 {
@@ -123,6 +173,7 @@ namespace RepoLayer.Service
                 if(new_Password==confirm_Password)
                 {
                     var result = fundo.UserTable.Where(x => x.Email == email).FirstOrDefault();
+                    string newEncryptPass = EncryptPassword(new_Password);
                     result.Password = new_Password;
                     fundo.SaveChanges();
                     return true;

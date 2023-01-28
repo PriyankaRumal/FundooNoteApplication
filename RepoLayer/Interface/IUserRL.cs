@@ -12,5 +12,7 @@ namespace RepoLayer.Interface
         public string LoginUser(UserLogin userLogin);
         public string ForgetPassword(string email);
         public bool ResetPassword(string email, string new_Password, string confirm_Password);
+        public string EncryptPassword(string Password);
+        public string DecryptPassword(string Password);
     }
 }
