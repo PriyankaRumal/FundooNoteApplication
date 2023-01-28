@@ -2,6 +2,16 @@
 using CommonLayer.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
+using RepoLayer.Context;
+using RepoLayer.Entities;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System;
 
 namespace FudooNotesApplication.Controllers
 {
@@ -10,9 +20,13 @@ namespace FudooNotesApplication.Controllers
     public class CollabController : ControllerBase
     {
         ICollabBL collabbl;
-        public CollabController(ICollabBL collabbl)
+        private readonly FundoContext fundoContext;
+        private readonly IDistributedCache distributedCache;
+        public CollabController(ICollabBL collabbl, FundoContext fundoContext, IDistributedCache distributedCache)
         {
             this.collabbl = collabbl;
+            this.distributedCache = distributedCache;
+            this.fundoContext = fundoContext;
         }
         [HttpPost]
         [Route("CreateCollab")]
@@ -82,6 +96,31 @@ namespace FudooNotesApplication.Controllers
 
                 throw;
             }
+        }
+        [HttpGet("redis")]
+        public async Task<IActionResult> GetAllCollabUsingRedisCache()
+        {
+            var userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userId").Value);
+            var cacheKey = "CollabList";
+            string serializedCollabList;
+            var CollabList = new List<CollabEntity>();
+            var redisCollabList = await distributedCache.GetAsync(cacheKey);
+            if (redisCollabList != null)
+            {
+                serializedCollabList = Encoding.UTF8.GetString(redisCollabList);
+                CollabList = JsonConvert.DeserializeObject<List<CollabEntity>>(serializedCollabList);
+            }
+            else
+            {
+                CollabList = await fundoContext.CollabTable.ToListAsync();
+                serializedCollabList = JsonConvert.SerializeObject(CollabList);
+                redisCollabList = Encoding.UTF8.GetBytes(serializedCollabList);
+                var options = new DistributedCacheEntryOptions()
+                    .SetAbsoluteExpiration(DateTime.Now.AddMinutes(10))
+                    .SetSlidingExpiration(TimeSpan.FromMinutes(2));
+                await distributedCache.SetAsync(cacheKey, redisCollabList, options);
+            }
+            return Ok(CollabList);
         }
     }
 }
